@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="50dp"
+    tools:context="ua.i.pl.sosnovskyi.trainingday3.OtherActivity">
+
+    <EditText
+        android:id="@+id/destination_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other activity" />
+
+    <EditText
+        android:id="@+id/destination_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other activity" />
+<Button
+    android:id="@+id/sendBack"
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:text="Send Back"/>
+    <!--<Button-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="50dp" />-->
+</LinearLayout>
