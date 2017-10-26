@@ -1,6 +1,8 @@
 package ua.i.pl.sosnovskyi.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,10 @@ public class MyAdapter extends BaseAdapter {
 
     public MyAdapter(List<String> list) {
         this.list = list;
+    }
+
+    public MyAdapter getListAdapter() {
+        return this;
     }
 
     @Override
@@ -73,6 +81,35 @@ public class MyAdapter extends BaseAdapter {
                 itemList.get(position).setItemChacked();
                 notifyDataSetChanged();
             }
+        });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String title = "Deleting";
+                String message = "You are deleting current item";
+                String deleting = "DELETE";
+                String calcel = "Cancel";
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(parent.getContext());
+                alertDialog.setTitle(title);  // заголовок
+                alertDialog.setMessage(message + (position + 1)); // сообщение
+                alertDialog.setPositiveButton(deleting, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        itemList.remove(position);
+                        list.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                alertDialog.setNegativeButton(calcel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog.show();
+                return false;
+            }
+
         });
 //        viewHolder.aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
