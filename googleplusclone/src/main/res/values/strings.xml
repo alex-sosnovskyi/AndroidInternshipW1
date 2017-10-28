@@ -4,4 +4,8 @@
     <string name="item_name">Snorkel Advanture</string>
     <string name="item_length">5m</string>
     <string name="describe">On our way to Kaua!!! What a beautiful day!!!</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="action_dialog">Actions</string>
+    <string name="action_dialog_content">Make your choise</string>
+    <string name="delete_action">Delete</string>
 </resources>

@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="@string/item_name"
-        android:textColor="@drawable/breadcrumbs_figure"
+        android:textColor="@color/colorBlue"
         android:layout_toRightOf="@id/breadcrumbs_item"
         android:layout_marginLeft="10dp"/>
     <TextView
@@ -83,8 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/add_like"
-            android:layout_marginLeft="20dp"
-            android:text="32"/>
+            android:layout_marginLeft="20dp" />
         <ImageView
             android:id="@+id/next"
             android:layout_width="30dp"
