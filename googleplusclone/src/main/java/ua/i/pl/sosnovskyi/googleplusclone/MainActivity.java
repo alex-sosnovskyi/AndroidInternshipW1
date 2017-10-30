@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int EDIT_NEW_REQUEST_CODE = 1;
-    private static final int DELETE_AND_EDIT = 1;
+    private static final int ADD_REQUEST_CODE = 1;
+    private static final int EDIT_REQUEST_CODE =2 ;
     private List<MyItem> itemList;
     private MyAdapter adapter;
     private Context context;
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final MyItem itemAtPosition = (MyItem) parent.getItemAtPosition(position);
-              //  showDeleteDialog(DELETE_AND_EDIT, itemAtPosition, position, context);
+//                final MyItem itemAtPosition = (MyItem) parent.getItemAtPosition(position);
+                //  showDeleteDialog(DELETE_AND_EDIT, itemAtPosition, position, context);
                 FragmentManager manager = getSupportFragmentManager();
                 MyDialog myDialogFragment = new MyDialog();
                 myDialogFragment.setPosition(position);
@@ -68,29 +68,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditActivity.class);
-                startActivityForResult(intent, EDIT_NEW_REQUEST_CODE);
+                startActivityForResult(intent, ADD_REQUEST_CODE);
             }
         });
 
     }
 
 
-public void EditClicked(int position){
-    MyItem itemToEdit = itemList.get(position);
-    Intent intent = new Intent(context, EditActivity.class);
-    intent.putExtra("userImgUrl", itemToEdit.getPictureUrl());
-    intent.putExtra("userName", itemToEdit.getUserName());
-    intent.putExtra("itemName",itemToEdit.getNewsName());
-    intent.putExtra("length", itemToEdit.getLength());
-    intent.putExtra("describe", itemToEdit.getDescription());
-    intent.putExtra("photoUrl", itemToEdit.getPhotoUrl());
-    startActivityForResult(intent, EDIT_NEW_REQUEST_CODE);
+    public void EditClicked(int position) {
+        MyItem itemToEdit = itemList.get(position);
+        Intent intent = new Intent(context, EditActivity.class);
+        intent.putExtra("userImgUrl", itemToEdit.getPictureUrl());
+        intent.putExtra("userName", itemToEdit.getUserName());
+        intent.putExtra("itemName", itemToEdit.getNewsName());
+        intent.putExtra("length", itemToEdit.getLength());
+        intent.putExtra("describe", itemToEdit.getDescription());
+        intent.putExtra("photoUrl", itemToEdit.getPhotoUrl());
+        intent.putExtra("position", position);
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
 
-}
-public void DeleteClicked(int position){
-    itemList.remove(position);
-    adapter.notifyDataSetChanged();
-}
+    }
+
+    public void DeleteClicked(int position) {
+        itemList.remove(position);
+        adapter.notifyDataSetChanged();
+    }
 //    private void showDeleteDialog(final int id, final MyItem itemAtPosition, int position, Context context) {
 //
 //
@@ -140,18 +142,40 @@ public void DeleteClicked(int position){
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == EDIT_NEW_REQUEST_CODE) || (resultCode == RESULT_OK)) {
 
-            MyItem newItem = new MyItem(data.getStringExtra("responceUserImgUrl"),
-                    data.getStringExtra("responceUserName"),
-                    data.getStringExtra("responceItemName"),
-                    data.getStringExtra("responceLength"),
-                    data.getStringExtra("responceDescribe"),
-                    data.getStringExtra("resposponcePhotoUrl"), 0);
-            itemList.add(newItem);
-
-            adapter.notifyDataSetChanged();
+        if (resultCode != RESULT_OK) {
+            return;
         }
+
+//        if (requestCode != ADD_REQUEST_CODE) {
+//            return;
+//        }
+switch (requestCode){
+    case ADD_REQUEST_CODE:{
+        MyItem newItem = new MyItem(data.getStringExtra("responceUserImgUrl"),
+                data.getStringExtra("responceUserName"),
+                data.getStringExtra("responceItemName"),
+                data.getStringExtra("responceLength"),
+                data.getStringExtra("responceDescribe"),
+                data.getStringExtra("resposponcePhotoUrl"), 0);
+        itemList.add(newItem);
+        adapter.notifyDataSetChanged();
+    }
+    case EDIT_REQUEST_CODE:{
+        int current=data.getIntExtra("position", 0);
+        MyItem currentItem = itemList.get(current);
+
+       currentItem.setPictureUrl(data.getStringExtra("responceUserImgUrl"));
+               currentItem.setUserName(data.getStringExtra("responceUserName"));
+                currentItem.setNewsName(data.getStringExtra("responceItemName"));
+                currentItem.setLength(data.getStringExtra("responceLength"));
+                currentItem.setDescription(data.getStringExtra("responceDescribe"));
+                currentItem.setPhotoUrl(data.getStringExtra("resposponcePhotoUrl"));
+        adapter.notifyDataSetChanged();
+    }
+    default: return;
+}
+
 
 
     }
