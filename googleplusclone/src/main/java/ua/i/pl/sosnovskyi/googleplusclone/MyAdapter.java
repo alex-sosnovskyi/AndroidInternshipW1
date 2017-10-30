@@ -44,13 +44,11 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
         }
         MyItem currentItem = getItem(position);
 
-
         viewHolder.textUserNameView.setText(currentItem.getUserName());
         viewHolder.textNewsNameView.setText(currentItem.getNewsName());
         viewHolder.textLengthView.setText(currentItem.getLength());
         viewHolder.textDescriptionView.setText(currentItem.getDescription());
         viewHolder.textCurrentLikesView.setText(String.valueOf(currentItem.getCurrentLikes()));
-
         PicassoHolder.show(parent.getContext(), currentItem.getPictureUrl(), viewHolder.imageUserView);
         PicassoHolder.show(parent.getContext(), currentItem.getPhotoUrl(), viewHolder.imagePhotoView);
         //convertView.setOnClickListener(onItemClickListener);

@@ -16,12 +16,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EditActivity extends AppCompatActivity {
-    EditText userEditImg;
-    EditText userName;
-    EditText itemName;
-    EditText describe;
-    EditText photo;
-    EditText lengthEdit;
+    private EditText userEditImg;
+    private EditText userName;
+    private EditText itemName;
+    private EditText describe;
+    private EditText photo;
+    private EditText lengthEdit;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,9 @@ public class EditActivity extends AppCompatActivity {
         lengthEdit = (EditText) findViewById(R.id.length_edit);
         describe = (EditText) findViewById(R.id.description_edit);
         photo = (EditText) findViewById(R.id.photo_edit);
-        Intent intent=getIntent();
-        if(intent!=null){
+        Intent intent = getIntent();
+        if (intent != null) {
+            position = intent.getIntExtra("position", 0);
             userEditImg.setText(intent.getStringExtra("userImgUrl"));
             userName.setText(intent.getStringExtra("userName"));
             itemName.setText(intent.getStringExtra("itemName"));
@@ -55,17 +57,18 @@ public class EditActivity extends AppCompatActivity {
         fabOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isValidUrl(String.valueOf(userEditImg.getText())) || !isValidUrl(String.valueOf(photo.getText()))){
+                if (!isValidUrl(String.valueOf(userEditImg.getText())) || !isValidUrl(String.valueOf(photo.getText()))) {
                     Toast.makeText(view.getContext(), "Wrong data", Toast.LENGTH_LONG).show();
-
+                    return;
                 }
-                    Intent intent = new Intent(getParent(), MainActivity.class);
+                Intent intent = new Intent(EditActivity.this, MainActivity.class);
                 intent.putExtra("responceUserImgUrl", String.valueOf(userEditImg.getText()));
                 intent.putExtra("responceUserName", String.valueOf(userName.getText()));
                 intent.putExtra("responceItemName", String.valueOf(itemName.getText()));
                 intent.putExtra("responceLength", String.valueOf(lengthEdit.getText()));
                 intent.putExtra("responceDescribe", String.valueOf(describe.getText()));
                 intent.putExtra("resposponcePhotoUrl", String.valueOf(photo.getText()));
+                intent.putExtra("position", position);
                 setResult(RESULT_OK, intent);
                 finish();
             }
