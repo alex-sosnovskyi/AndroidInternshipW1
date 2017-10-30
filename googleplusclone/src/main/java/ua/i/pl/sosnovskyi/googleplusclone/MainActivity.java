@@ -1,9 +1,9 @@
 package ua.i.pl.sosnovskyi.googleplusclone;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +15,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_REQUEST_CODE = 1;
-    private static final int EDIT_REQUEST_CODE =2 ;
+    private static final int EDIT_REQUEST_CODE = 2;
+
+    private final String[] dialogItemNamesArray = {"Edit", "Delete"};
+
     private List<MyItem> itemList;
     private MyAdapter adapter;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = MainActivity.this;
         itemList = new ArrayList<>();
         itemList.add(new MyItem("https://images.pexels.com/photos/407035/model-face-beautiful-black-and-white-407035.jpeg?w=940&h=650&auto=compress&cs=tinysrgb",
                 "Justin Oliver", "Snorkel Advanture", "5m", "On our way to Kaua!!! What a beautiful day!!!",
@@ -48,14 +49,25 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.item_list);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(getString(R.string.action_dialog))
+                        .setItems(dialogItemNamesArray, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (dialogItemNamesArray[which]) {
+                                    case "Edit": {
+                                        editClicked(position);
+                                        break;
+                                    }
+                                    case "Delete": {
+                                        deleteClicked(position);
+                                        break;
+                                    }
+                                }
+                            }
 
-//                final MyItem itemAtPosition = (MyItem) parent.getItemAtPosition(position);
-                //  showDeleteDialog(DELETE_AND_EDIT, itemAtPosition, position, context);
-                FragmentManager manager = getSupportFragmentManager();
-                MyDialog myDialogFragment = new MyDialog();
-                myDialogFragment.setPosition(position);
-                myDialogFragment.show(manager, "dialog");
+                        });
+                builder.show();
                 return true;
             }
         });
@@ -75,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void EditClicked(int position) {
+    public void editClicked(int position) {
         MyItem itemToEdit = itemList.get(position);
-        Intent intent = new Intent(context, EditActivity.class);
+        Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("userImgUrl", itemToEdit.getPictureUrl());
         intent.putExtra("userName", itemToEdit.getUserName());
         intent.putExtra("itemName", itemToEdit.getNewsName());
@@ -86,58 +98,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("photoUrl", itemToEdit.getPhotoUrl());
         intent.putExtra("position", position);
         startActivityForResult(intent, EDIT_REQUEST_CODE);
-
     }
 
-    public void DeleteClicked(int position) {
+    public void deleteClicked(int position) {
         itemList.remove(position);
         adapter.notifyDataSetChanged();
     }
-//    private void showDeleteDialog(final int id, final MyItem itemAtPosition, int position, Context context) {
-//
-//
-//        itemList.remove(position);
-//    }
-
-//    @Nullable
-//    @Override
-//    protected Dialog onCreateDialog(int id) {
-//
-//        switch (id) {
-//            case DELETE_AND_EDIT: {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(getString(R.string.action_dialog))
-//                        .setMessage(getString(R.string.action_dialog_content))
-//                        .setCancelable(false)
-//                        .setPositiveButton(getString(R.string.delete_action),
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog,
-//                                                        int id) {
-//
-//                                        dialog.cancel();
-//                                    }
-//                                })
-//                        .setNeutralButton(R.string.edit_selected,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog,
-//                                                        int id) {
-//
-//                                        dialog.cancel();
-//                                    }
-//                                })
-//                        .setNegativeButton(R.string.cancel_dialog,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog,
-//                                                        int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//                return builder.create();
-//            }
-//            default:
-//                return null;
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,35 +113,34 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-//        if (requestCode != ADD_REQUEST_CODE) {
-//            return;
-//        }
-switch (requestCode){
-    case ADD_REQUEST_CODE:{
-        MyItem newItem = new MyItem(data.getStringExtra("responceUserImgUrl"),
-                data.getStringExtra("responceUserName"),
-                data.getStringExtra("responceItemName"),
-                data.getStringExtra("responceLength"),
-                data.getStringExtra("responceDescribe"),
-                data.getStringExtra("resposponcePhotoUrl"), 0);
-        itemList.add(newItem);
-        adapter.notifyDataSetChanged();
-    }
-    case EDIT_REQUEST_CODE:{
-        int current=data.getIntExtra("position", 0);
-        MyItem currentItem = itemList.get(current);
+        switch (requestCode) {
+            case ADD_REQUEST_CODE: {
+                MyItem newItem = new MyItem(data.getStringExtra("responceUserImgUrl"),
+                        data.getStringExtra("responceUserName"),
+                        data.getStringExtra("responceItemName"),
+                        data.getStringExtra("responceLength"),
+                        data.getStringExtra("responceDescribe"),
+                        data.getStringExtra("resposponcePhotoUrl"), 0);
+                itemList.add(newItem);
+                adapter.notifyDataSetChanged();
+                break;
+            }
+            case EDIT_REQUEST_CODE: {
+                int current = data.getIntExtra("position", 0);
+                MyItem currentItem = itemList.get(current);
 
-       currentItem.setPictureUrl(data.getStringExtra("responceUserImgUrl"));
-               currentItem.setUserName(data.getStringExtra("responceUserName"));
+                currentItem.setPictureUrl(data.getStringExtra("responceUserImgUrl"));
+                currentItem.setUserName(data.getStringExtra("responceUserName"));
                 currentItem.setNewsName(data.getStringExtra("responceItemName"));
                 currentItem.setLength(data.getStringExtra("responceLength"));
                 currentItem.setDescription(data.getStringExtra("responceDescribe"));
                 currentItem.setPhotoUrl(data.getStringExtra("resposponcePhotoUrl"));
-        adapter.notifyDataSetChanged();
-    }
-    default: return;
-}
-
+                adapter.notifyDataSetChanged();
+                break;
+            }
+            default:
+                return;
+        }
 
 
     }

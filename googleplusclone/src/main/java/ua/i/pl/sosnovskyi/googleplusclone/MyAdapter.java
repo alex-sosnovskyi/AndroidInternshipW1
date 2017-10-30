@@ -1,11 +1,10 @@
 package ua.i.pl.sosnovskyi.googleplusclone;
 
-import android.app.AlertDialog;
+
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -21,15 +20,9 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
 
     private static final String TAG = MyAdapter.class.getSimpleName();
 
-    private View.OnClickListener onItemClickListener;
-
 
     public MyAdapter(@NonNull Context context, @NonNull List<MyItem> objects) {
         super(context, 0, objects);
-    }
-
-    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -42,6 +35,7 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         MyItem currentItem = getItem(position);
 
         viewHolder.textUserNameView.setText(currentItem.getUserName());
@@ -51,7 +45,7 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
         viewHolder.textCurrentLikesView.setText(String.valueOf(currentItem.getCurrentLikes()));
         PicassoHolder.show(parent.getContext(), currentItem.getPictureUrl(), viewHolder.imageUserView);
         PicassoHolder.show(parent.getContext(), currentItem.getPhotoUrl(), viewHolder.imagePhotoView);
-        //convertView.setOnClickListener(onItemClickListener);
+
         return convertView;
     }
 
@@ -62,10 +56,7 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
         private final TextView textLengthView;
         private final TextView textDescriptionView;
         private final ImageView imagePhotoView;
-        private final TextView textAddLikesView;
         private final TextView textCurrentLikesView;
-        private final ImageView imageNextView;
-        private final ImageView imageCommentView;
 
         private ViewHolder(View convertView) {
             imageUserView = (ImageView) convertView.findViewById(R.id.user_img);
@@ -74,10 +65,7 @@ public class MyAdapter extends ArrayAdapter<MyItem> {
             textLengthView = (TextView) convertView.findViewById(R.id.length);
             textDescriptionView = (TextView) convertView.findViewById(R.id.description);
             imagePhotoView = (ImageView) convertView.findViewById(R.id.photo);
-            textAddLikesView = (TextView) convertView.findViewById(R.id.add_like);
             textCurrentLikesView = (TextView) convertView.findViewById(R.id.current_likes);
-            imageNextView = (ImageView) convertView.findViewById(R.id.next);
-            imageCommentView = (ImageView) convertView.findViewById(R.id.comment);
         }
     }
 

@@ -10,4 +10,6 @@
     <string name="delete_action">Delete</string>
     <string name="cancel_dialog">Cancel</string>
     <string name="edit_selected">Edit</string>
+    <string name="enter_url_to_user_icon">Enter URL to user icon</string>
+    <string name="url_only">URL only</string>
 </resources>

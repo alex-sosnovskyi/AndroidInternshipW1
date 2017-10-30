@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundLightGrey"
-    android:orientation="vertical"
     android:paddingTop="20dp"
     tools:context="ua.i.pl.sosnovskyi.googleplusclone.MainActivity">
 
@@ -13,20 +12,17 @@
         android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackgroundWhite">
-
-    </ListView>
+        android:background="@color/colorBackgroundWhite" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_gravity="end|right"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="18dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
         android:src="@drawable/ic_create_black_24dp" />
 </RelativeLayout>

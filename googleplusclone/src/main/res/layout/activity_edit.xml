@@ -11,17 +11,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter URL to user icon" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/user_edit_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:hint="URL only"/>
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/user_edit_img"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:hint="@string/url_only" />
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"

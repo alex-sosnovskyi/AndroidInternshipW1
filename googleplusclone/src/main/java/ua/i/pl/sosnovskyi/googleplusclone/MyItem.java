@@ -1,6 +1,9 @@
 package ua.i.pl.sosnovskyi.googleplusclone;
 
-class MyItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+class MyItem implements Parcelable {
     private String pictureUrl;
     private String userName;
     private String newsName;
@@ -75,4 +78,42 @@ class MyItem {
     public void setCurrentLikes(int currentLikes) {
         this.currentLikes = currentLikes;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(pictureUrl);
+        dest.writeString(userName);
+        dest.writeString(newsName);
+        dest.writeString(length);
+        dest.writeString(description);
+        dest.writeString(photoUrl);
+        dest.writeInt(currentLikes);
+    }
+
+    private MyItem(Parcel in) {
+        pictureUrl = in.readString();
+        userName = in.readString();
+        newsName = in.readString();
+        length = in.readString();
+        description = in.readString();
+        photoUrl = in.readString();
+        currentLikes = in.readInt();
+    }
+
+    public static final Creator<MyItem> CREATOR = new Creator<MyItem>() {
+        @Override
+        public MyItem createFromParcel(Parcel in) {
+            return new MyItem(in);
+        }
+
+        @Override
+        public MyItem[] newArray(int size) {
+            return new MyItem[size];
+        }
+    };
 }
