@@ -12,4 +12,10 @@
     <string name="edit_selected">Edit</string>
     <string name="enter_url_to_user_icon">Enter URL to user icon</string>
     <string name="url_only">URL only</string>
+    <string name="enter_user_name">Enter user name</string>
+    <string name="enter_news_name">Enter news name</string>
+    <string name="length">Length</string>
+    <string name="describe_item">Describe item please</string>
+    <string name="avatar">avatar</string>
+    <string name="url_of_photo">Url of photo</string>
 </resources>
