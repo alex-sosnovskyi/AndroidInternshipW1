@@ -33,6 +33,15 @@ public class EditActivity extends AppCompatActivity {
         lengthEdit = (EditText) findViewById(R.id.length_edit);
         describe = (EditText) findViewById(R.id.description_edit);
         photo = (EditText) findViewById(R.id.photo_edit);
+        Intent intent=getIntent();
+        if(intent!=null){
+            userEditImg.setText(intent.getStringExtra("userImgUrl"));
+            userName.setText(intent.getStringExtra("userName"));
+            itemName.setText(intent.getStringExtra("itemName"));
+            lengthEdit.setText(intent.getStringExtra("length"));
+            describe.setText(intent.getStringExtra("describe"));
+            photo.setText(intent.getStringExtra("photoUrl"));
+        }
         FloatingActionButton fabOk = (FloatingActionButton) findViewById(R.id.fab_add);
         FloatingActionButton fabCancel = (FloatingActionButton) findViewById(R.id.fab_cancel);
         fabCancel.setOnClickListener(new View.OnClickListener() {
