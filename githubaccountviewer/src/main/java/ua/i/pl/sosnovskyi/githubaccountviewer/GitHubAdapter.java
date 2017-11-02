@@ -10,9 +10,9 @@ import android.widget.TextView;
 import java.util.List;
 
 
-class GitHubAdapter extends ArrayAdapter<GitHubResponce> {
+class GitHubAdapter extends ArrayAdapter<GitHubUserResponce> {
 
-    GitHubAdapter(@NonNull Context context, @NonNull List<GitHubResponce> objects) {
+    GitHubAdapter(@NonNull Context context, @NonNull List<GitHubUserResponce> objects) {
         super(context, 0, objects);
     }
 
@@ -27,10 +27,10 @@ class GitHubAdapter extends ArrayAdapter<GitHubResponce> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GitHubResponce current = getItem(position);
+        GitHubUserResponce current = getItem(position);
         viewHolder.repoId.setText(String.valueOf(current.getId()));
         viewHolder.repoName.setText(current.getName());
-        viewHolder.htmlUrl.setText(current.getHtmlUrl());
+        viewHolder.login.setText(current.getLogin());
         viewHolder.deteTime.setText(String.valueOf(current.getCreatedAt()));
         return convertView;
     }
@@ -38,13 +38,13 @@ class GitHubAdapter extends ArrayAdapter<GitHubResponce> {
     private static class ViewHolder {
         private final TextView repoId;
         private final TextView repoName;
-        private final TextView htmlUrl;
+        private final TextView login;
         private final TextView deteTime;
 
         private ViewHolder(View view) {
             this.repoId = (TextView) view.findViewById(R.id.item_id);
             this.repoName = (TextView) view.findViewById(R.id.text_item);
-            this.htmlUrl = (TextView) view.findViewById(R.id.html_url);
+            this.login = (TextView) view.findViewById(R.id.login);
             this.deteTime = (TextView) view.findViewById(R.id.date_time);
         }
     }
