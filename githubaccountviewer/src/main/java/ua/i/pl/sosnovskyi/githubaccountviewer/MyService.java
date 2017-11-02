@@ -57,7 +57,7 @@ class MyService {
      * @param updateCallback
      */
     public void getUserRepositorieInfo(final String accessToken, final UpdateCallback<GitHubUserResponce> updateCallback) {
-        Call<GitHubUserResponce> call = getGitHubService().listAllRepos(accessToken);
+        Call<GitHubUserResponce> call = getGitHubService().listUserInfo(accessToken);
         call.enqueue(new Callback<GitHubUserResponce>() {
             @Override
             public void onResponse(Call<GitHubUserResponce> call, Response<GitHubUserResponce> response) {
