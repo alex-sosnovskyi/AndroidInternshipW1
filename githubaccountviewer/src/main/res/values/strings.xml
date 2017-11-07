@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GitHubAccountViewer</string>
+    <string name="account_name">Enter an account name</string>
+    <string name="open">Open</string>
+    <string name="toast_message">Enter an account name</string>
+    <string name="title_activity_list">ListGitHubActivity</string>
+    <string name="search_button_name">Search</string>
+    <string name="enter_user_name">Enter user name</string>
+    <string name="public_repo">Public repo</string>
+    <string name="user_info">User info</string>
+    <string name="search_repo">Search repo</string>
+</resources>

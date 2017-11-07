@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TrainingDay3.iml" filepath="$PROJECT_DIR$/TrainingDay3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/githubaccountviewer/githubaccountviewer.iml" filepath="$PROJECT_DIR$/githubaccountviewer/githubaccountviewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/googleplusclone/googleplusclone.iml" filepath="$PROJECT_DIR$/googleplusclone/googleplusclone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/instagrammclone/instagrammclone.iml" filepath="$PROJECT_DIR$/instagrammclone/instagrammclone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uritest/uritest.iml" filepath="$PROJECT_DIR$/uritest/uritest.iml" />
+    </modules>
+  </component>
+</project>

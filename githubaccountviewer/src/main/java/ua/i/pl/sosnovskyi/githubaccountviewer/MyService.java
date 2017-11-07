@@ -19,16 +19,21 @@ import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ua.i.pl.sosnovskyi.githubaccountviewer.GitHubResponce;
 
 
 class MyService {
     private static final String TAG = MyService.class.getSimpleName();
-    private static final String CLIENT_ID = "";
-    private static final String CLIENT_SECRET = "";
+    private static final String CLIENT_ID = "797c34103a56609a3b70";
+    private static final String CLIENT_SECRET = "9f87ccd20386b0976b07f75ebdc467d115e153b8";
     private static final String BASE_URL = "https://github.com/login/oauth/authorize";
+    private final PreferencesLoader preferencesLoader;
+
+    public MyService(PreferencesLoader preferensesLoader) {
+        this.preferencesLoader = preferensesLoader;
+    }
 
     /**
-     *
      * @return url string
      */
     public String getUrl() {
@@ -37,6 +42,7 @@ class MyService {
 
     /**
      * Retrofit building
+     *
      * @return Retrofit
      */
     private GitHubService getGitHubService() {
@@ -52,12 +58,44 @@ class MyService {
     }
 
     /**
-     * return user info
-     * @param accessToken
+     * Return object of search
+     * @param searchStr user login
      * @param updateCallback
      */
-    public void getUserRepositorieInfo(final String accessToken, final UpdateCallback<GitHubUserResponce> updateCallback) {
-        Call<GitHubUserResponce> call = getGitHubService().listUserInfo(accessToken);
+    public void getSearch(String searchStr, final UpdateCallback<SearchResponce> updateCallback) {
+        Call<SearchResponce> call = getGitHubService().searchResult(searchStr);
+        call.enqueue(new Callback<SearchResponce>() {
+            @Override
+            public void onResponse(Call<SearchResponce> call, Response<SearchResponce> response) {
+                if (!response.isSuccessful()) {
+                    Log.d(TAG, "!response.isSuccessful");
+                    return;
+                }
+
+                SearchResponce body = response.body();
+                if (body == null) {
+                    Log.d(TAG, "body == null");
+                    return;
+                }
+                Log.d(TAG, "onResponse");
+                updateCallback.onComplete(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<SearchResponce> call, Throwable t) {
+                Log.d(TAG, "Response is failed", t);
+                updateCallback.onFailed(t);
+            }
+        });
+    }
+
+    /**
+     * return user info
+     *
+     * @param updateCallback
+     */
+    public void getUserRepositorieInfo(final UpdateCallback<GitHubUserResponce> updateCallback) {
+        Call<GitHubUserResponce> call = getGitHubService().listUserInfo(preferencesLoader.getAccessToken());
         call.enqueue(new Callback<GitHubUserResponce>() {
             @Override
             public void onResponse(Call<GitHubUserResponce> call, Response<GitHubUserResponce> response) {
@@ -84,8 +122,9 @@ class MyService {
     }
 
     /**
-     *  return access token
-     * @param session String session id
+     * return access token
+     *
+     * @param session        String session id
      * @param updateCallback
      */
     public void gitHubAutorized(final String session, final UpdateCallback<String> updateCallback) {
@@ -114,11 +153,12 @@ class MyService {
     }
 
     /**
-     *  return All public users repositories
+     * return All public users repositories
+     *
      * @param updateCallback
      * @param account
      */
-    public void getPublicRepositories(final UpdateCallback updateCallback, String account) {
+    public void getPublicRepositories(String account, final UpdateCallback updateCallback) {
         Call<List<GitHubResponce>> call = getGitHubService().listRepos(account);
         call.enqueue(new Callback<List<GitHubResponce>>() {
             @Override
@@ -147,6 +187,7 @@ class MyService {
 
     /**
      * Callback interface
+     *
      * @param <T>
      */
     public interface UpdateCallback<T> {

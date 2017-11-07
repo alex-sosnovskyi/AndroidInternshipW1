@@ -1,0 +1,1 @@
+include ':app', ':instagrammclone', ':myapplication', ':uritest', ':googleplusclone', ':githubaccountviewer'

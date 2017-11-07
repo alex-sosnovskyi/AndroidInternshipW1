@@ -23,4 +23,8 @@ public interface GitHubService {
 
     @GET("user")
     Call<GitHubUserResponce> listUserInfo(@Query("access_token") String accessToken);
+
+    @GET("search/users")
+    Call<SearchResponce> searchResult(@Query("q") String searchStr);
 }
+

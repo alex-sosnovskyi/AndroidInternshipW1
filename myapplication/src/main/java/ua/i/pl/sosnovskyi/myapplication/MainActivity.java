@@ -6,7 +6,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.CollapsibleActionView;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,20 +33,20 @@ public class MainActivity extends AppCompatActivity {
     List<String> itemList;
     private static int count = 1;
     private MyAdapter adapter;
-
+    int DELETE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final String TAG="States";
+
+        final String TAG = "States";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "MainActivity: onCreate()");
         listView = (ListView) findViewById(R.id.itemsList);
-//        ImageView imageView = (ImageView) findViewById(R.id.mainImg);
-//        Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(imageView);
         itemList = new ArrayList<>();
         adapter = new MyAdapter(itemList);
         listView.setAdapter(adapter);
+
         FloatingActionButton fBtn = (FloatingActionButton) findViewById(R.id.fab);
         fBtn.setOnClickListener(new View.OnClickListener() {
             @Override
