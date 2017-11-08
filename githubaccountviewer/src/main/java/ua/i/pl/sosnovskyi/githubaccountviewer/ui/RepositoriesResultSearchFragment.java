@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.SearchResponce;
 
 
 public class RepositoriesResultSearchFragment extends Fragment {
-    SearchResponce searchResponce;
-    SearchAdapter adapter;
-    List<GitHubUserResponce> userList=new ArrayList<GitHubUserResponce>();
+    private SearchAdapter adapter;
+
+    public static Fragment newInstance(String searchName) {
+        Fragment fragment = new RepositoriesResultSearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("key", searchName);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +46,12 @@ public class RepositoriesResultSearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-       String name= MyApplication.from(getContext()).getSearchName();
+        String name=  getArguments().getString("key");
         MyApplication.from(getContext()).getMyService()
                 .getSearch(name, new MyService.UpdateCallback<SearchResponce>() {
                     @Override
                     public void onComplete(SearchResponce response) {
-                       searchResponce=response;
-                        userList.addAll(Arrays.asList(searchResponce.getUsers()));
-                        adapter.addAll(userList);
+                        adapter.addAll(response.getUsers());
                         adapter.notifyDataSetChanged();
                     }
 

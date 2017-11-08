@@ -4,21 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ua.i.pl.sosnovskyi.githubaccountviewer.ShowActivity">
+    tools:context="ua.i.pl.sosnovskyi.githubaccountviewer.ui.ShowActivity">
 
     <LinearLayout
-        android:id="@+id/fragment_show_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:id="@+id/fragment_show"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-
+        android:id="@+id/tabs_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -31,9 +20,9 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_view_headline_black_24dp"
             android:gravity="bottom|center_vertical|center_horizontal"
+            android:textColor="@color/button_text_color"
             android:textOff="@string/public_repo"
-            android:textOn="@string/public_repo"
-            android:textColor="@color/button_text_color" />
+            android:textOn="@string/public_repo" />
 
         <ToggleButton
             android:id="@+id/user_info"
@@ -42,9 +31,9 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_view_day_black_24dp"
             android:gravity="bottom|center_vertical|center_horizontal"
-            android:textOn="@string/user_info"
+            android:textColor="@color/button_text_color"
             android:textOff="@string/user_info"
-            android:textColor="@color/button_text_color" />
+            android:textOn="@string/user_info" />
 
         <ToggleButton
             android:id="@+id/search"
@@ -53,8 +42,14 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_search_black_24dp"
             android:gravity="bottom|center_vertical|center_horizontal"
+            android:textColor="@color/button_text_color"
             android:textOff="@string/search_repo"
-            android:textOn="@string/search_repo"
-            android:textColor="@color/button_text_color" />
+            android:textOn="@string/search_repo" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tabs_container" />
 </RelativeLayout>

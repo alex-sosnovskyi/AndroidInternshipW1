@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,13 +12,17 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
+
 
 public class UserInfoFragment extends Fragment {
     private TextView id;
-    TextView login;
-    ImageView avatarUrl;
-    TextView userName;
-    TextView createdAt;
+    private TextView login;
+    private ImageView avatarUrl;
+    private TextView userName;
+    private TextView createdAt;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +44,12 @@ public class UserInfoFragment extends Fragment {
         avatarUrl = (ImageView) view.findViewById(R.id.avatar_url);
         userName = (TextView) view.findViewById(R.id.user_name);
         createdAt = (TextView) view.findViewById(R.id.created_at);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         MyApplication.from(getContext()).getMyService()
                 .getUserRepositorieInfo(new MyService.UpdateCallback<GitHubUserResponce>() {
                     @Override
@@ -49,7 +59,6 @@ public class UserInfoFragment extends Fragment {
                         Picasso.with(getContext()).load(response.getAvatarUrl()).into(avatarUrl);
                         userName.setText(response.getName());
                         createdAt.setText(String.valueOf(response.getCreatedAt()));
-
                     }
 
                     @Override
@@ -57,10 +66,5 @@ public class UserInfoFragment extends Fragment {
                         Toast.makeText(getActivity(), "Responce failed", Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 }

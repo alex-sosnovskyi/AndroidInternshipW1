@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,12 +13,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
+
 
 public class RepositoriesCurrentUserListFragment extends Fragment {
-    private String account;
     private static final String TAG = RepositoriesCurrentUserListFragment.class.getSimpleName();
     private GitHubCurrentUserRepositoriesAdapter adapter;
-
+    private String account;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +40,8 @@ public class RepositoriesCurrentUserListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) view.findViewById(R.id.list_items);
 
-        account = MyApplication.from(getContext()).getPreferencesLoader().getAccount();
-        adapter = new GitHubCurrentUserRepositoriesAdapter(getContext(), new ArrayList<GitHubResponce>());
+//       account = MyApplication.from(getContext()).getPreferencesLoader().getAccount();
+        adapter = new GitHubCurrentUserRepositoriesAdapter(getContext(), new ArrayList<PublicReposResponce>());
         listView.setAdapter(adapter);
     }
 
@@ -49,9 +52,9 @@ public class RepositoriesCurrentUserListFragment extends Fragment {
         MyService service = MyApplication.from(getContext()).getMyService();
         String account = MyApplication.from(getContext()).getPreferencesLoader().getAccount();
         service.getPublicRepositories(account,
-                new MyService.UpdateCallback<List<GitHubResponce>>() {
+                new MyService.UpdateCallback<List<PublicReposResponce>>() {
                     @Override
-                    public void onComplete(List<GitHubResponce> response) {
+                    public void onComplete(List<PublicReposResponce> response) {
                         Log.d(TAG, "ShowActivity onComplete");
                         adapter.clear();
                         adapter.addAll(response);
@@ -61,7 +64,6 @@ public class RepositoriesCurrentUserListFragment extends Fragment {
                     @Override
                     public void onFailed(Throwable throwable) {
                         Log.d(TAG, "ShowActivity onFailed");
-                        Toast.makeText(getContext(), "Responce failed", Toast.LENGTH_LONG).show();
                     }
                 });
     }

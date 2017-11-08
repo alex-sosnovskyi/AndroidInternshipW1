@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.net;
 
 
 import java.util.List;
@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface GitHubService {
 
     @GET("users/{user}/repos")
-    Call<List<GitHubResponce>> listRepos(@Path("user") String user);
+    Call<List<PublicReposResponce>> listRepos(@Path("user") String user);
 
     @POST("https://github.com/login/oauth/access_token")
     Call<String> listOAuthRepos(

@@ -1,6 +1,5 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -10,6 +9,10 @@ import android.webkit.WebViewClient;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d(TAG, url);
-                String regex = "http:\\/\\/callback.url";
 
                 if (!url.startsWith("http://callback.url")) {
                     return super.shouldOverrideUrlLoading(view, url);
@@ -51,27 +53,13 @@ public class MainActivity extends AppCompatActivity {
 
                 String session = matcher.group();
                 Log.d("Server return session", session);
-                MyApplication.from(MainActivity.this).getMyService().gitHubAutorized(session, new MyService.UpdateCallback<String>() {
+                final MyService myService = MyApplication.from(MainActivity.this).getMyService();
+                final PreferencesLoader preferencesLoader = MyApplication.from(MainActivity.this).getPreferencesLoader();
+
+                myService.gitHubAutorized(session, new MyService.UpdateCallback<String>() {
                     @Override
                     public void onComplete(String response) {
-                        Log.d(TAG, "onComplete: " + response);
-                        MyApplication.from(MainActivity.this).getPreferencesLoader().setAccessToken(response);
-                        MyApplication.from(MainActivity.this).getMyService()
-                                .getUserRepositorieInfo(new MyService.UpdateCallback<GitHubUserResponce>() {
-                                    @Override
-                                    public void onComplete(GitHubUserResponce response) {
-                                        MyApplication.from(MainActivity.this
-                                        ).getPreferencesLoader().setAccount(response.getLogin());
-
-                                    }
-
-                                    @Override
-                                    public void onFailed(Throwable throwable) {
-
-                                    }
-                                });
-                        ShowActivity.startActivity(MainActivity.this);
-                        finish();
+                        fetchUserInfoAndLaunchNextActivity(response, preferencesLoader, myService);
                     }
 
                     @Override
@@ -87,5 +75,24 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl(MyApplication.from(MainActivity.this).getMyService().getUrl());
 
 
+    }
+
+    private void fetchUserInfoAndLaunchNextActivity(String response, final PreferencesLoader preferencesLoader, MyService myService) {
+        Log.d(TAG, "onComplete: " + response);
+        preferencesLoader.setAccessToken(response);
+        myService.getUserRepositorieInfo(new MyService.UpdateCallback<GitHubUserResponce>() {
+                    @Override
+                    public void onComplete(GitHubUserResponce response) {
+                        preferencesLoader.setAccount(response.getLogin());
+
+                        ShowActivity.startActivity(MainActivity.this);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+//                                        Toast.makeText()
+                    }
+                });
     }
 }

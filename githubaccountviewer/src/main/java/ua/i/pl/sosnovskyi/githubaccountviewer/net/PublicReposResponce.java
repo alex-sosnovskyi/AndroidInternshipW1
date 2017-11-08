@@ -1,11 +1,11 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.net;
 
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-class GitHubResponce {
+public class PublicReposResponce {
     @SerializedName("id")
     private long id;
     @SerializedName("name")

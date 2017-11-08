@@ -1,5 +1,7 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,14 +9,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import android.widget.TextView;
 
-
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
 
 
 public class RepositoriesSearchFragment extends Fragment {
+    private Callback mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,31 +31,33 @@ public class RepositoriesSearchFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (Callback) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement FragmentListener");
+        }
+
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final TextView searchText=(TextView) view.findViewById(R.id.search_string);
-        final Button searchButton=(Button) view.findViewById(R.id.search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        final TextView searchText = (TextView) view.findViewById(R.id.search_string);
+
+        view.findViewById(R.id.search_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(searchText.getText())){
+                if (TextUtils.isEmpty(searchText.getText().toString().trim())) {
                     return;
                 }
-                if(searchText.getText().equals(" ")){
-                    return;
-                }
-                MyApplication.from(getContext()).setSerchName(String.valueOf(searchText.getText()));
-               getFragmentManager().beginTransaction()
-                       .addToBackStack("search")
-                       .replace(R.id.fragment_show, new RepositoriesResultSearchFragment(), "search_result")
-                       .commit();
+                mListener.showSearchResultFragment(searchText.getText().toString());
             }
         });
 
     }
-    @Override
-    public void onResume() {
-        super.onResume();
 
-    }
+
 }

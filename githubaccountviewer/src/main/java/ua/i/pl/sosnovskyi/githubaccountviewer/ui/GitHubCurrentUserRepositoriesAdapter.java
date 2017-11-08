@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
 
-public class GitHubCurrentUserRepositoriesAdapter extends ArrayAdapter<GitHubResponce> {
-    public GitHubCurrentUserRepositoriesAdapter(@NonNull Context context, List<GitHubResponce> objects) {
+
+public class GitHubCurrentUserRepositoriesAdapter extends ArrayAdapter<PublicReposResponce> {
+    public GitHubCurrentUserRepositoriesAdapter(@NonNull Context context, List<PublicReposResponce> objects) {
         super(context, 0, objects);
     }
 
@@ -27,7 +30,7 @@ public class GitHubCurrentUserRepositoriesAdapter extends ArrayAdapter<GitHubRes
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        GitHubResponce current = getItem(position);
+        PublicReposResponce current = getItem(position);
         viewHolder.repoId.setText(String.valueOf(current.getId()));
         viewHolder.name.setText(current.getName());
         viewHolder.htmlUrl.setText(current.getHtmlUrl());

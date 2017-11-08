@@ -1,9 +1,11 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.net;
 
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
+
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 
 public class SearchResponce {
     @SerializedName("total_count")

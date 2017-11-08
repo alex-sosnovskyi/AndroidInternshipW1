@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+
+import ua.i.pl.sosnovskyi.githubaccountviewer.R;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 
 
 public class SearchAdapter extends ArrayAdapter<GitHubUserResponce>{

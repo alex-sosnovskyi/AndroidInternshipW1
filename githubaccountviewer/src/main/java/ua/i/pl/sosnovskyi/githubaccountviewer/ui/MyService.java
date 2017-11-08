@@ -1,4 +1,4 @@
-package ua.i.pl.sosnovskyi.githubaccountviewer;
+package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,10 +19,13 @@ import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ua.i.pl.sosnovskyi.githubaccountviewer.GitHubResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubService;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.SearchResponce;
 
 
-class MyService {
+public class MyService {
     private static final String TAG = MyService.class.getSimpleName();
     private static final String CLIENT_ID = "797c34103a56609a3b70";
     private static final String CLIENT_SECRET = "9f87ccd20386b0976b07f75ebdc467d115e153b8";
@@ -159,25 +162,28 @@ class MyService {
      * @param account
      */
     public void getPublicRepositories(String account, final UpdateCallback updateCallback) {
-        Call<List<GitHubResponce>> call = getGitHubService().listRepos(account);
-        call.enqueue(new Callback<List<GitHubResponce>>() {
+        Call<List<PublicReposResponce>> call = getGitHubService().listRepos(account);
+        call.enqueue(new Callback<List<PublicReposResponce>>() {
             @Override
-            public void onResponse(Call<List<GitHubResponce>> call, @NonNull Response<List<GitHubResponce>> response) {
+            public void onResponse(Call<List<PublicReposResponce>> call, @NonNull Response<List<PublicReposResponce>> response) {
                 Log.d(TAG, "onResponse");
                 if (!response.isSuccessful()) {
+                    Log.d(TAG, "!response.isSuccessful");
                     return;
                 }
 
-                List<GitHubResponce> body = response.body();
+                List<PublicReposResponce> body = response.body();
                 if (body == null) {
+                    Log.d(TAG, "body == null");
                     return;
                 }
 
                 updateCallback.onComplete(response.body());
+                Log.d(TAG, "after updateCallback.onComplete");
             }
 
             @Override
-            public void onFailure(Call<List<GitHubResponce>> call, Throwable t) {
+            public void onFailure(Call<List<PublicReposResponce>> call, Throwable t) {
                 Log.d(TAG, "onFailure");
                 updateCallback.onFailed(t);
                 Log.d(TAG, "Response is failed", t);

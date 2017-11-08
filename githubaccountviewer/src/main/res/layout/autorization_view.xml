@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ua.i.pl.sosnovskyi.githubaccountviewer.MainActivity">
+    tools:context="ua.i.pl.sosnovskyi.githubaccountviewer.ui.MainActivity">
 
     <WebView
         android:id="@+id/webView"

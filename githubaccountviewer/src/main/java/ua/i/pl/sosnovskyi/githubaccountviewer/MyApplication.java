@@ -2,11 +2,10 @@ package ua.i.pl.sosnovskyi.githubaccountviewer;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import ua.i.pl.sosnovskyi.githubaccountviewer.ui.MyService;
+import ua.i.pl.sosnovskyi.githubaccountviewer.ui.PreferencesLoader;
 
 
 public final class MyApplication extends Application {
@@ -16,14 +15,6 @@ public final class MyApplication extends Application {
 
     public static MyApplication from(@NonNull Context context) {
         return (MyApplication) context.getApplicationContext();
-    }
-
-    public void setSerchName(String searchName) {
-        this.searchName = searchName;
-    }
-
-    public String getSearchName() {
-        return searchName;
     }
 
     @Override
