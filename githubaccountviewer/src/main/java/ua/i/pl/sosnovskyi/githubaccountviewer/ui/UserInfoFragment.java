@@ -1,5 +1,7 @@
 package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import ua.i.pl.sosnovskyi.githubaccountviewer.database.DBHelper;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
 import ua.i.pl.sosnovskyi.githubaccountviewer.R;
@@ -49,22 +52,35 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        DBHelper dbHelper = MyApplication.from(getContext()).getDbHelper();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query("user", null, null, null, null, null, null);
+        if (c.getCount() != 0) {
+            c.moveToFirst();
+            id.setText(String.valueOf(c.getString(c.getColumnIndex("userId"))));
+            login.setText(c.getString(c.getColumnIndex("login")));
+            Picasso.with(getContext()).load(c.getString(c.getColumnIndex("avatarUrl"))).into(avatarUrl);
+            userName.setText(c.getString(c.getColumnIndex("userName")));
+            createdAt.setText(String.valueOf(c.getString(c.getColumnIndex("created"))));
 
-        MyApplication.from(getContext()).getMyService()
-                .getUserRepositorieInfo(new MyService.UpdateCallback<GitHubUserResponce>() {
-                    @Override
-                    public void onComplete(GitHubUserResponce response) {
-                        id.setText(String.valueOf(response.getId()));
-                        login.setText(response.getLogin());
-                        Picasso.with(getContext()).load(response.getAvatarUrl()).into(avatarUrl);
-                        userName.setText(response.getName());
-                        createdAt.setText(String.valueOf(response.getCreatedAt()));
-                    }
-
-                    @Override
-                    public void onFailed(Throwable throwable) {
-                        Toast.makeText(getActivity(), "Responce failed", Toast.LENGTH_LONG).show();
-                    }
-                });
+        }
+        c.close();
+        db.close();
+//        MyApplication.from(getContext()).getMyService()
+//                .getUserRepositorieInfo(new MyService.UpdateCallback<GitHubUserResponce>() {
+//                    @Override
+//                    public void onComplete(GitHubUserResponce response) {
+//                        id.setText(String.valueOf(response.getId()));
+//                        login.setText(response.getLogin());
+//                        Picasso.with(getContext()).load(response.getAvatarUrl()).into(avatarUrl);
+//                        userName.setText(response.getName());
+//                        createdAt.setText(String.valueOf(response.getCreatedAt()));
+//                    }
+//
+//                    @Override
+//                    public void onFailed(Throwable throwable) {
+//                        Toast.makeText(getActivity(), "Responce failed", Toast.LENGTH_LONG).show();
+//                    }
+//                });
     }
 }

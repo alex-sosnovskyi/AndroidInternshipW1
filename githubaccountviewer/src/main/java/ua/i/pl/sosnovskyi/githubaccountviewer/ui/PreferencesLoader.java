@@ -20,35 +20,35 @@ public class PreferencesLoader {
         sPref = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
     }
 
-    public static PreferencesLoader preferencesBuilder(Context context) {
-        return new PreferencesLoader(context);
-    }
+//    public static PreferencesLoader preferencesBuilder(Context context) {
+//        return new PreferencesLoader(context);
+//    }
 
-    public void setAccount(String account) {
-        sPref.edit()
-                .putString(ACCOUNT, account).apply();
-    }
+//    public void setAccount(String account) {
+//        sPref.edit()
+//                .putString(ACCOUNT, account).apply();
+//    }
 
-    public String getAccount() {
-        return sPref.getString(ACCOUNT, "");
-    }
+//    public String getAccount() {
+//        return sPref.getString(ACCOUNT, "");
+//    }
 
-    private String tokenPatser(String responce) {
-        String regex = "(?<=access_token=)(\\S{1,40})";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(responce);
-        matcher.find();
-        return matcher.group(1);
-    }
+//    private String tokenPatser(String responce) {
+//        String regex = "(?<=access_token=)(\\S{1,40})";
+//        Pattern pattern = Pattern.compile(regex);
+//        Matcher matcher = pattern.matcher(responce);
+//        matcher.find();
+//        return matcher.group(1);
+//    }
 
-    public void setAccessToken(String responce) {
-        String data = tokenPatser(responce);
-        sPref.edit()
-                .putString(ACCESS_TOKEN, data)
-                .apply();
-    }
+//    public void setAccessToken(String responce) {
+//        String data = tokenPatser(responce);
+//        sPref.edit()
+//                .putString(ACCESS_TOKEN, data)
+//                .apply();
+//    }
 
-    public String getAccessToken() {
-        return sPref.getString(ACCESS_TOKEN, "");
-    }
+//    public String getAccessToken() {
+//        return sPref.getString(ACCESS_TOKEN, "");
+//    }
 }

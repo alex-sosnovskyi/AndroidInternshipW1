@@ -1,5 +1,8 @@
 package ua.i.pl.sosnovskyi.githubaccountviewer.ui;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,6 +22,7 @@ import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ua.i.pl.sosnovskyi.githubaccountviewer.database.DBHelper;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubService;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
@@ -30,11 +34,12 @@ public class MyService {
     private static final String CLIENT_ID = "797c34103a56609a3b70";
     private static final String CLIENT_SECRET = "9f87ccd20386b0976b07f75ebdc467d115e153b8";
     private static final String BASE_URL = "https://github.com/login/oauth/authorize";
-    private final PreferencesLoader preferencesLoader;
+    private DBHelper dbHelper;
 
-    public MyService(PreferencesLoader preferensesLoader) {
-        this.preferencesLoader = preferensesLoader;
-    }
+
+public MyService(Context context, DBHelper dbHelper){
+    this.dbHelper=dbHelper;
+}
 
     /**
      * @return url string
@@ -62,7 +67,8 @@ public class MyService {
 
     /**
      * Return object of search
-     * @param searchStr user login
+     *
+     * @param searchStr      user login
      * @param updateCallback
      */
     public void getSearch(String searchStr, final UpdateCallback<SearchResponce> updateCallback) {
@@ -71,16 +77,16 @@ public class MyService {
             @Override
             public void onResponse(Call<SearchResponce> call, Response<SearchResponce> response) {
                 if (!response.isSuccessful()) {
-                    Log.d(TAG, "!response.isSuccessful");
+                    Log.d(TAG, "getSearch !response.isSuccessful");
                     return;
                 }
 
                 SearchResponce body = response.body();
                 if (body == null) {
-                    Log.d(TAG, "body == null");
+                    Log.d(TAG, "getSearch body == null");
                     return;
                 }
-                Log.d(TAG, "onResponse");
+                Log.d(TAG, "getSearch onResponse");
                 updateCallback.onComplete(response.body());
             }
 
@@ -98,21 +104,32 @@ public class MyService {
      * @param updateCallback
      */
     public void getUserRepositorieInfo(final UpdateCallback<GitHubUserResponce> updateCallback) {
-        Call<GitHubUserResponce> call = getGitHubService().listUserInfo(preferencesLoader.getAccessToken());
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c=db.query("tokenTable", null, null, null, null, null, null);
+        if(c.getCount()==0){
+            Log.d("Class MyService method getUserRepositorieInfo", "Table tokenTable is empty");
+        }
+        c.moveToFirst();
+       String token= c.getString(c.getColumnIndex("token"));
+        Log.d("Class MyService method getUserRepositorieInfo", token);
+        c.close();
+        dbHelper.close();
+        Call<GitHubUserResponce> call = getGitHubService().listUserInfo(token);
         call.enqueue(new Callback<GitHubUserResponce>() {
             @Override
             public void onResponse(Call<GitHubUserResponce> call, Response<GitHubUserResponce> response) {
                 if (!response.isSuccessful()) {
-                    Log.d(TAG, "!response.isSuccessful");
+                    Log.d(TAG, "getUserRepositorieInfo !response.isSuccessful");
                     return;
                 }
 
                 GitHubUserResponce body = response.body();
                 if (body == null) {
-                    Log.d(TAG, "body == null");
+                    Log.d(TAG, "getUserRepositorieInfo body == null");
                     return;
                 }
-                Log.d(TAG, "onResponse");
+                Log.d(TAG, "getUserRepositorieInfo onResponse");
                 updateCallback.onComplete(response.body());
             }
 
@@ -168,13 +185,13 @@ public class MyService {
             public void onResponse(Call<List<PublicReposResponce>> call, @NonNull Response<List<PublicReposResponce>> response) {
                 Log.d(TAG, "onResponse");
                 if (!response.isSuccessful()) {
-                    Log.d(TAG, "!response.isSuccessful");
+                    Log.d(TAG, "getPublicRepositories !response.isSuccessful");
                     return;
                 }
 
                 List<PublicReposResponce> body = response.body();
                 if (body == null) {
-                    Log.d(TAG, "body == null");
+                    Log.d(TAG, "getPublicRepositories body == null");
                     return;
                 }
 
