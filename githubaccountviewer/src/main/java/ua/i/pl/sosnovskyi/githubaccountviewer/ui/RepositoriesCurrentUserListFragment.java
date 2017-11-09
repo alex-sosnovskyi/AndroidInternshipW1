@@ -18,13 +18,15 @@ import java.util.List;
 import ua.i.pl.sosnovskyi.githubaccountviewer.MyApplication;
 import ua.i.pl.sosnovskyi.githubaccountviewer.R;
 import ua.i.pl.sosnovskyi.githubaccountviewer.database.DBHelper;
+import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.util.Repository;
 
 
 public class RepositoriesCurrentUserListFragment extends Fragment {
     private static final String TAG = RepositoriesCurrentUserListFragment.class.getSimpleName();
     private GitHubCurrentUserRepositoriesAdapter adapter;
-    private String account;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,21 +53,9 @@ public class RepositoriesCurrentUserListFragment extends Fragment {
         super.onResume();
 
         MyService service = MyApplication.from(getContext()).getMyService();
-        DBHelper dbHelper = MyApplication.from(getContext()).getDbHelper();
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.query("user", null, null, null, null, null, null);
-        String account = "";
-        if (c.getCount() != 0) {
-            c.moveToFirst();
-            account = c.getString(c.getColumnIndex("login"));
-            c.close();
-            db.close();
-            Log.d("Class RepositoriesCurrentUserFragment c.getCount() != 0 account=", account);
-        }else{
-            Log.d("Class RepositoriesCurrentUserFragment c.getCount==0 account=", account);
-        }
-
-        service.getPublicRepositories(account,
+        Repository repository = MyApplication.from(getContext()).getRepository();
+        List<GitHubUserResponce> userList = repository.getUser();
+        service.getPublicRepositories(userList.get(0).getLogin(),
                 new MyService.UpdateCallback<List<PublicReposResponce>>() {
                     @Override
                     public void onComplete(List<PublicReposResponce> response) {

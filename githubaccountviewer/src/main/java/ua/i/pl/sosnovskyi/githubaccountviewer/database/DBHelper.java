@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table tokenTable"+
                 " (id integer primary key autoincrement, token text);");
         db.execSQL("create table user"+
-                "(id integer primary key autoincrement, userId text, login text, avatarUrl text, userName text, created text);");
+                "(id integer primary key autoincrement, userId text, login text, avatarUrl text, userName text, created date);");
     }
 
     @Override

@@ -27,6 +27,7 @@ import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubService;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.GitHubUserResponce;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.PublicReposResponce;
 import ua.i.pl.sosnovskyi.githubaccountviewer.net.SearchResponce;
+import ua.i.pl.sosnovskyi.githubaccountviewer.util.Repository;
 
 
 public class MyService {
@@ -34,11 +35,11 @@ public class MyService {
     private static final String CLIENT_ID = "797c34103a56609a3b70";
     private static final String CLIENT_SECRET = "9f87ccd20386b0976b07f75ebdc467d115e153b8";
     private static final String BASE_URL = "https://github.com/login/oauth/authorize";
-    private DBHelper dbHelper;
+    private Repository repository;
 
 
-public MyService(Context context, DBHelper dbHelper){
-    this.dbHelper=dbHelper;
+public MyService(Context context, Repository repository){
+    this.repository=repository;
 }
 
     /**
@@ -104,17 +105,7 @@ public MyService(Context context, DBHelper dbHelper){
      * @param updateCallback
      */
     public void getUserRepositorieInfo(final UpdateCallback<GitHubUserResponce> updateCallback) {
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c=db.query("tokenTable", null, null, null, null, null, null);
-        if(c.getCount()==0){
-            Log.d("Class MyService method getUserRepositorieInfo", "Table tokenTable is empty");
-        }
-        c.moveToFirst();
-       String token= c.getString(c.getColumnIndex("token"));
-        Log.d("Class MyService method getUserRepositorieInfo", token);
-        c.close();
-        dbHelper.close();
+        String token=repository.getToken();
         Call<GitHubUserResponce> call = getGitHubService().listUserInfo(token);
         call.enqueue(new Callback<GitHubUserResponce>() {
             @Override

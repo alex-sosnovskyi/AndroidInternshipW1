@@ -6,25 +6,26 @@ import android.support.annotation.NonNull;
 
 import ua.i.pl.sosnovskyi.githubaccountviewer.database.DBHelper;
 import ua.i.pl.sosnovskyi.githubaccountviewer.ui.MyService;
+import ua.i.pl.sosnovskyi.githubaccountviewer.util.Repository;
 
 
 public final class MyApplication extends Application {
     private MyService myService;
-    private DBHelper dbHelper;
+    private Repository repository;
 
     public static MyApplication from(@NonNull Context context) {
         return (MyApplication) context.getApplicationContext();
     }
 
-    public DBHelper getDbHelper() {
-        return dbHelper;
+    public Repository getRepository() {
+        return repository;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        dbHelper = new DBHelper(getApplicationContext());
-        myService = new MyService(getApplicationContext(), dbHelper);
+        repository  = new Repository(getApplicationContext());
+        myService = new MyService(getApplicationContext(), repository);
     }
 
     public MyService getMyService() {

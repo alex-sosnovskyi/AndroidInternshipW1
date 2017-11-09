@@ -36,11 +36,6 @@ public class ShowActivity extends AppCompatActivity implements Callback {
         activeTab = TAB.PUBLIC;
         puplicRepo.setChecked(true);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_show, new RepositoriesCurrentUserListFragment(), "repositoriesList")
-                .commit();
-
         puplicRepo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
